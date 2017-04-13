@@ -1,16 +1,14 @@
 package com.fjsmu.modules.encounter.entity;
 
 import com.fjsmu.comm.entity.DataEntity;
+import com.fjsmu.modules.user.entity.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
-import weixin.popular.bean.user.User;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 病例Entity
@@ -32,6 +30,10 @@ public class Encounter extends DataEntity<Encounter> {
     private String description;     // 病例描述
     private int status;             // 状态 0：待处理 1 正在处理 2：处理完成
 
+    public static final int STATUS_WAIT = 0; // 等待处理
+    public static final int STATUS_PROCESSING = 1;   // 处理中
+    public static final int STATUS_OVER = 2;   // 处理结束
+
     public Encounter() {
         super();
     }
@@ -41,6 +43,8 @@ public class Encounter extends DataEntity<Encounter> {
         this.id = id;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id")
     public User getPatient() {
         return patient;
     }
