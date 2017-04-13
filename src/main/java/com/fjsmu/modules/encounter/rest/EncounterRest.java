@@ -34,6 +34,20 @@ public class EncounterRest {
     /**
      * 查看患者病例
      *
+     * @param doctorId
+     * @return
+     * @throws Exception
+     */
+    @GET
+    @Path("/doctor/{userId}")
+    @Produces(ConstUtils.CONTENT_TYPE_UTF8)
+    public Response doctorGet(@PathParam("userId") String doctorId) throws Exception {
+        return RestMsgUtil.successJackson(encounterService.listByDoctorId(doctorId));
+    }
+
+    /**
+     * 查看患者病例
+     *
      * @param userId
      * @return
      * @throws Exception
@@ -41,7 +55,7 @@ public class EncounterRest {
     @GET
     @Path("/patient/{userId}")
     @Produces(ConstUtils.CONTENT_TYPE_UTF8)
-    public Response get(@PathParam("userId") String userId) throws Exception {
+    public Response patientGet(@PathParam("userId") String userId) throws Exception {
         return RestMsgUtil.successJackson(encounterService.listByUserId(userId));
     }
 
@@ -53,24 +67,26 @@ public class EncounterRest {
      * @throws Exception
      */
     @POST
-    @Path("/user/{userId}")
+    @Path("/patient/{userId}")
     @Produces(ConstUtils.CONTENT_TYPE_UTF8)
     public Response patientRegister(@PathParam("userId") String userId) throws Exception {
         return RestMsgUtil.successJackson(encounterService.patientRegister(userId));
     }
 
+    /**
+     * 医生诊断病例
+     *
+     * @param encounterId
+     * @param doctorId
+     * @param jsonData
+     * @return
+     * @throws Exception
+     */
     @PUT
-    @Path("/{menuId}")
+    @Path("/{encounterId}/doctor/{doctorId}")
     @Produces(ConstUtils.CONTENT_TYPE_UTF8)
-    public Response put(@PathParam("menuId") String menuId, String jsonData) throws Exception {
-        return null;
-    }
-
-    @DELETE
-    @Path("/{menuId}")
-    @Produces(ConstUtils.CONTENT_TYPE_UTF8)
-    public Response delete(@PathParam("menuId") String menuId) throws Exception {
-        return null;
+    public Response doctorUpdateEncounter(@PathParam("encounterId") String encounterId, @PathParam("doctorId") String doctorId, String jsonData) throws Exception {
+        return RestMsgUtil.successJackson(encounterService.doctorUpdateEncounter(doctorId, encounterId, jsonData));
     }
 
 }

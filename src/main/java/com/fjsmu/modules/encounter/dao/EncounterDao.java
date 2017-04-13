@@ -35,6 +35,17 @@ public class EncounterDao extends BaseDao<Encounter> {
     }
 
     /**
+     * 根据医生ID查询病例列表
+     *
+     * @return
+     * @throws Exception
+     */
+    public List<Encounter> listByDoctorId(String doctorId) throws Exception{
+        Parameter parameter = new Parameter(doctorId, User.DEL_FLAG_NORMAL);
+        return find("from Encounter where updateBy.id = :p1 and delFlag = :p2", parameter);
+    }
+
+    /**
      * 根据type查询用户列表
      *
      * @return
