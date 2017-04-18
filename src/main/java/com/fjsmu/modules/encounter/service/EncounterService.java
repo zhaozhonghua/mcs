@@ -122,6 +122,7 @@ public class EncounterService {
         }
 
         if (updateFlag){
+            encounter.setStatus(Encounter.STATUS_OVER);
             encounter.setUpdateBy(doctor);
             encounter.setUpdateDate(new Date());
             encounterDao.save(encounter);

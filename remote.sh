@@ -35,8 +35,8 @@ if ! [ $? -eq 0 ]; then
  exit 3
 fi
 
-echo "cp /home/dev/api/target/api.war /opt/pub/tomcat/tomcat-8.0.36-api/webapps/ROOT.war"
-cp /home/dev/api/target/api.war /opt/pub/tomcat/tomcat-8.0.36-api/webapps/ROOT.war
+echo "cp /home/dev/mcs/target/api.war /opt/pub/tomcat/tomcat-8.0.36-web/webapps/ROOT.war"
+cp /home/dev/mcs/target/mcs.war /opt/pub/tomcat/tomcat-8.0.36-web/webapps/ROOT.war
 if ! [ $? -eq 0 ]; then
  echo "error: cp war"
  exit 4
