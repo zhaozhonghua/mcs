@@ -17,7 +17,7 @@
 
         <!-- 实体类映射 -->
         <mapping class="com.fjsmu.modules.user.entity.User" />
-        <!--<mapping class="com.fjsmu.modules.encounter.entity.Encounter" />-->
+        <mapping class="com.fjsmu.modules.encounter.entity.Encounter" />
 
     </session-factory>
 </hibernate-configuration>  

@@ -1,6 +1,5 @@
 package com.fjsmu.modules.encounter.service;
 
-import com.fjsmu.app.ErrorCode;
 import com.fjsmu.app.ErrorCodeException;
 import com.fjsmu.app.ErrorUtils;
 import com.fjsmu.comm.util.RestMsgUtil;
@@ -11,13 +10,13 @@ import com.fjsmu.modules.user.dao.UserDao;
 import com.fjsmu.modules.user.entity.User;
 import com.fjsmu.tools.StringUtils;
 import com.fjsmu.util.JsonUtils;
-import com.sun.source.doctree.DocTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 病例管理
@@ -31,6 +30,10 @@ public class EncounterService {
 
     @Autowired
     private UserDao userDao;
+
+    public List<Encounter> listByStatus(int status) throws Exception{
+        return encounterDao.listByStatus(status);
+    }
 
     /**
      * 根据患者用户ID查询病例列表
@@ -59,7 +62,11 @@ public class EncounterService {
      *
      * @return
      */
-    public Encounter patientRegister(String userId) throws Exception{
+    public Encounter patientRegister(String userId, String jsonData) throws Exception{
+
+        Map<String, Object> paramMap = RestMsgUtil.convertJsonToMap(jsonData);
+
+        String remark = paramMap.getOrDefault("remark", "").toString(); // 病例详述
 
         Encounter encounter = encounterDao.getEncounterByUserId(userId);
         if(encounter != null){
@@ -73,6 +80,7 @@ public class EncounterService {
         encounter.setCreateBy(patient);
         encounter.setStatus(Encounter.STATUS_WAIT);
         encounter.setRegisterCode(SmsUtil.genVerifyCode(6));
+        encounter.setRemarks(remark);
 
         encounterDao.save(encounter);
 

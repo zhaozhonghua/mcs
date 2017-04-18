@@ -8,10 +8,10 @@ import org.jboss.resteasy.spi.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-
 
 /**
  * 病例接口服务
@@ -27,8 +27,9 @@ public class EncounterRest {
 
     @GET
     @Produces(ConstUtils.CONTENT_TYPE_UTF8)
-    public Response list(@Context HttpRequest req) throws Exception {
-        return RestMsgUtil.successJackson(null);
+    @RolesAllowed("authenticated")
+    public Response list(@QueryParam("status") int status, @Context HttpRequest req) throws Exception {
+        return RestMsgUtil.successJackson(encounterService.listByStatus(status));
     }
 
     /**
@@ -41,6 +42,7 @@ public class EncounterRest {
     @GET
     @Path("/doctor/{userId}")
     @Produces(ConstUtils.CONTENT_TYPE_UTF8)
+    @RolesAllowed("authenticated")
     public Response doctorGet(@PathParam("userId") String doctorId) throws Exception {
         return RestMsgUtil.successJackson(encounterService.listByDoctorId(doctorId));
     }
@@ -55,6 +57,7 @@ public class EncounterRest {
     @GET
     @Path("/patient/{userId}")
     @Produces(ConstUtils.CONTENT_TYPE_UTF8)
+    @RolesAllowed("authenticated")
     public Response patientGet(@PathParam("userId") String userId) throws Exception {
         return RestMsgUtil.successJackson(encounterService.listByUserId(userId));
     }
@@ -69,8 +72,9 @@ public class EncounterRest {
     @POST
     @Path("/patient/{userId}")
     @Produces(ConstUtils.CONTENT_TYPE_UTF8)
-    public Response patientRegister(@PathParam("userId") String userId) throws Exception {
-        return RestMsgUtil.successJackson(encounterService.patientRegister(userId));
+    @RolesAllowed("authenticated")
+    public Response patientRegister(@PathParam("userId") String userId, String jsonData) throws Exception {
+        return RestMsgUtil.successJackson(encounterService.patientRegister(userId, jsonData));
     }
 
     /**
@@ -85,6 +89,7 @@ public class EncounterRest {
     @PUT
     @Path("/{encounterId}/doctor/{doctorId}")
     @Produces(ConstUtils.CONTENT_TYPE_UTF8)
+    @RolesAllowed("authenticated")
     public Response doctorUpdateEncounter(@PathParam("encounterId") String encounterId, @PathParam("doctorId") String doctorId, String jsonData) throws Exception {
         return RestMsgUtil.successJackson(encounterService.doctorUpdateEncounter(doctorId, encounterId, jsonData));
     }
