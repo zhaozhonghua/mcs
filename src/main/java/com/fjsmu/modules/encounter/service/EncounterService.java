@@ -112,13 +112,8 @@ public class EncounterService {
         }
 
         if(JsonUtils.exist(jsonData, "description")){
-            if(StringUtils.isNotEmpty(encounterUpdate.getDescription())
-                    && StringUtils.isNotEmpty(encounter.getDescription())
-                    && !encounterUpdate.getDescription().equals(encounter.getDescription())){
-
-                encounter.setDescription(encounterUpdate.getDescription());
-                updateFlag = true;
-            }
+            encounter.setDescription(encounterUpdate.getDescription());
+            updateFlag = true;
         }
 
         if (updateFlag){
